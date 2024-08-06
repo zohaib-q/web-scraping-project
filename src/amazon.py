@@ -3,6 +3,7 @@ import requests
 import webbrowser
 import pandas as pd
 
+#need headers in order to webscrape these websites
 HEADERS = {
     'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
                     'AppleWebKit/537.36 (KHTML, like Gecko)'

@@ -35,7 +35,7 @@ item = item.replace(' ', '+')
 
 # print(ebay.ebay_tings(item))
 list_ting = amazon.amazon_tings(item)
-
+print(list_ting)
 temp_list_1 = list()
 temp_list_2 = list()
 for i in range(len(list_ting)):

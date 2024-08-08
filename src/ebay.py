@@ -55,27 +55,42 @@ def ebay_tings(product_name):
             try:
                 specific_item.append(new_ebay_soup_2.find('div', attrs= {'class' : 'x-price-primary'}).text)
             except:
-                specific_item.append('None')
+                specific_item.append(0.0)
 
             try:
                 specific_item.append(new_ebay_soup_2.find('span', attrs={'class' : 'ux-summary__start--rating'}).text)    
             except:
-                specific_item.append('None')
+                specific_item.append(0.0)
+            
+            try:
+                specific_item.append(new_ebay_soup_2.find('span', attrs = {'class' : 'ux-summary__count'}).text)
+            except:
+                specific_item.append(0)
                 
             ebay_item_desc.append(specific_item)
         i += 1
 
     for i in range(len(ebay_item_desc)):
         try:
-            # print(ebay_item_desc[i][1])
+            #price
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('US $', '')
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('/ea', '')
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('None', '0')
             ebay_item_desc[i][1] = float(ebay_item_desc[i][1])
+            #reviews
+            ebay_item_desc[i][2] = float(ebay_item_desc[i][2])
+            #number of reviews
+            ebay_item_desc[i][3] = ebay_item_desc[i][3].replace(' product ratings', '')
+            ebay_item_desc[i][3] = int(ebay_item_desc[i][3])
+
+            #product score
+            ebay_item_desc[i].append(ebay_item_desc[i][2] * ebay_item_desc[i][3])
             # print(ebay_item_desc[i][1])
         except:
             pass
-    
+
+        
+
     return ebay_item_desc
 
 #gets user input

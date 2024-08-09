@@ -87,7 +87,7 @@ def ebay_tings(product_name):
             ebay_item_desc[i].append(ebay_item_desc[i][2] * ebay_item_desc[i][3])
             # print(ebay_item_desc[i][1])
         except:
-            pass
+            ebay_item_desc[i].append(0)
 
         
 

@@ -41,8 +41,12 @@ item = item.replace(' ', '+')
 # for i in range(len(list_ting)):
 #     pass
 
-test = ebay.ebay_tings(item)
+# test = ebay.ebay_tings(item)
+# print(test)
+
+test = walmart.walmart_tings(item)
 print(test)
+
 
 # print(walmart.walmart_tings(item))
 

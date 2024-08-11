@@ -43,25 +43,83 @@ def walmart_tings(product_name):
         walmart_names[i] = walmart_names[i].text
     for i in range(len(walmart_prices)):
         walmart_prices[i] = walmart_prices[i].text
-    for i in range(len(walmart_item_desc)):
+    # for i in range(len(walmart_item_desc)):
+    i = 0
+    j = 0
+    while i < len(walmart_item_desc):
         temp_list = list()
         walmart_item_desc[i] = walmart_item_desc[i].text
-        print(walmart_prices[i])
+
         #name of item
         temp_list.append(walmart_names[i])
 
         #price of item
-        price_index = walmart_prices[i].find('current price')
-        walmart_prices[i] = walmart_prices[i][price_index+15:]
-        bad_str = 'ow'
-        if bad_str in walmart_prices[i]:
-            walmart_prices[i] = walmart_prices[i].replace('ow $', '')
-        
-        if '$' in walmart_prices[i]:
-            index = walmart_prices[i].find('$')
-            walmart_prices[i] = walmart_prices[i][:index]
+        if '$' in walmart_item_desc[i]:
+            if 'current price' in walmart_prices[j]:
+                price_index = walmart_prices[j].find('current price')
+                walmart_prices[j] = walmart_prices[j][price_index+15:]
+                bad_str = 'ow'
+                if bad_str in walmart_prices[j]:
+                    walmart_prices[j] = walmart_prices[j].replace('ow $', '')
+                
+                if '$' in walmart_prices[j]:
+                    index = walmart_prices[j].find('$')
+                    walmart_prices[j] = walmart_prices[j][:index]
+                if '+' in walmart_prices[j]:
+                    walmart_prices[j] = walmart_prices[j].replace('+', '')
+                try:
+                    temp_list.append(float(walmart_prices[j]))
+                except:
+                    index = walmart_prices[j].find('.') + 3
+                    walmart_prices[j] = walmart_prices[j][:index]
+                    temp_list.append(float(walmart_prices[j]))
+                j += 1
+            
+            elif 'From$' in walmart_prices[j] and 'Was $' in walmart_prices[j]:
+                index = walmart_prices[j].find('$') + 1
+                walmart_prices[j] = walmart_prices[j][index:]
+                index = walmart_prices[j].find('$')
+                walmart_prices[j] = walmart_prices[j][:index]
+                walmart_prices[j] = walmart_prices[j][:len(walmart_prices[j])-2] + '.' + walmart_prices[j][len(walmart_prices[j])-2:]
+                temp_list.append(float(walmart_prices[j]))
+                j+=1
 
-        temp_list.append(walmart_prices[i])
+            elif 'From$' in walmart_prices[j]:
+                if ' months' in walmart_prices[j]:
+                    index_num_months = walmart_prices[j].find(' months') - 2
+                    num_months = walmart_prices[j][index_num_months:index_num_months+2]
+                    num_months = num_months.strip()
+                    num_months = int(num_months)
+
+                    #price comes right after 'From$'
+                    price_index = 5
+                    index = walmart_prices[j].find('/month') - 2
+                    walmart_prices[j] = walmart_prices[j][5:index] + '.' + walmart_prices[j][index:index+8]
+                    price = float(walmart_prices[j][:index-2])
+
+                    total_price = num_months * price
+                    temp_list.append([walmart_prices[j], total_price])
+                    j+=1
+                else:
+                    price_index = 5
+                    walmart_prices[j] = walmart_prices[j][5:]
+                    walmart_prices[j] = walmart_prices[j][:len(walmart_prices[j])-2] + '.' + walmart_prices[j][len(walmart_prices[j])-2:]
+
+                    temp_list.append(float(walmart_prices[j]))
+                    j+=1
+            elif 'Was $' in walmart_prices[j]:
+                walmart_prices[j] = walmart_prices[j][1:]
+                index = walmart_prices[j].find('$')
+                walmart_prices[j] = walmart_prices[j][:index - 2] + '.' + walmart_prices[j][index-2:index]
+                temp_list.append(float(walmart_prices[j]))
+                j+=1
+            elif '$' in walmart_prices[j]:
+                index = walmart_prices[j].find('$')+1
+                walmart_prices[j] = walmart_prices[j][index:len(walmart_prices[j])-2] + '.' + walmart_prices[j][len(walmart_prices[j])-2:]
+                temp_list.append(float(walmart_prices[j]))
+                j+=1
+        else:
+            temp_list.append(0)
 
         #review
         if 'out of 5 Stars' in walmart_item_desc[i]:
@@ -85,6 +143,7 @@ def walmart_tings(product_name):
         temp_list.append(temp_list[2] * temp_list[3])
 
         walmart_items.append(temp_list)
+        i += 1
 
 
 
@@ -120,6 +179,8 @@ def walmart_tings(product_name):
             
     #     walmart_item_desc.append(specific_item)
     print(walmart_item_desc)
+    for i in range(len(walmart_items)):
+        print(walmart_items[i][1])
     return walmart_items
 
 #gets user input

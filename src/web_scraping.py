@@ -26,7 +26,7 @@ HEADERS = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
     'accept-language': 'en-GB,en;q=0.9',
 }
-class item:
+class Item:
     def __init__(self, amazon_list, walmart_list, ebay_list):
         self.amazon_list =  amazon_list
         self.walmart_list = walmart_list
@@ -43,7 +43,32 @@ class item:
         else:
             return 'invalid option'
 
-    def sort_item_list(self, strr, strr2):
+    def num_items_shown(self, strr3):
+        try:
+            strr3 = int(strr3)
+            i = 0
+            short_a_list = list()
+            short_w_list = list()
+            short_e_list = list()
+            while i < strr3:
+                try:
+                    short_a_list.append(self.amazon_list[i])
+                except:
+                    pass
+                try:
+                    short_w_list.append(self.walmart_list[i])
+                except:
+                    pass
+                try:
+                    short_e_list.append(self.ebay_list[i])
+                except:
+                    pass
+                i += 1
+            return short_a_list, short_w_list, short_e_list
+        except:
+            return 'invalid string entered'
+
+    def sort_item_list(self, strr, strr2, strr3):
         if strr == 'price':
             self.amazon_list = self.sort_high_low(self.amazon_list, strr2, 1)
             self.walmart_list = self.sort_high_low(self.walmart_list, strr2, 1)
@@ -61,7 +86,35 @@ class item:
             self.walmart_list = self.sort_high_low(self.walmart_list, strr2, 4)
             self.ebay_list = self.sort_high_low(self.ebay_list, strr2, 4)
         
-        return self.amazon_list, self.walmart_list, self.ebay_list
+        return self.num_items_shown(strr3)
+    
+    def best_item_helper(self, i):
+        if self.amazon_list[0][i] > self.ebay_list[0][i]:
+            if self.amazon_list[0][i] > self.walmart_list[0][i]:
+                return self.amazon_list[0][i]
+        if self.ebay_list[0][i] > self.amazon_list[0][i]:
+            if self.ebay_list[0][i] > self.walmart_list[0][i]:
+                return self.ebay_list[0][i]
+        if self.walmart_list[0][i] > self.amazon_list[0][i]:
+            if self.walmart_list[0][i] > self.ebay_list[0][i]:
+                return self.walmart_list[0][i]
+
+    def best_item(self, strr, strr3):
+        try:
+            strr3 = int(strr3)
+            if strr == 'price':
+                return self.best_item_helper(1)
+            if strr == 'reviews':
+                return self.best_item_helper(2)
+            if strr == 'num of reviews':
+                return self.best_item_helper(3)
+            if strr == 'validity score':
+                return self.best_item_helper(4)
+        except:
+            return 'invalid string entered'
+        
+
+        
 
 #gets user input
 item = input("Enter the item you would like: ")
@@ -72,16 +125,25 @@ strr = input("\nHow would you like the list sorted \nPlease type in one of the f
 
 strr2 = input("\nWould you like the list sorted from low to high or high to low? \nType in either l to h or h to l: ")
 
+strr3 = input("\nHow many items from each list would you like to see? Enter a number: ")
+
 amazon_list = amazon.amazon_tings(item)
 
 walmart_list = walmart.walmart_tings(item)
 
 ebay_list = ebay.ebay_tings(item)
 
-amazon_list, walmart_list, ebay_list = item.sort_item_list(amazon_list, walmart_list, ebay_list, strr, strr2)
+item_list = Item(amazon_list, walmart_list, ebay_list)
 
-print(amazon_list)
+amazon_list, walmart_list, ebay_list = item_list.sort_item_list(strr, strr2, strr3)
 
+best_item_list = item_list.best_item(strr, strr3)
+
+print('Amazon List:\n' + amazon_list)
+print('Walmart List:\n' + walmart_list)
+print('Ebay List:\n' + ebay_list)
+
+print('The best item based on your filter preference is: \n' + best_item_list)
 
 
 

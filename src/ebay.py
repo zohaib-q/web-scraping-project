@@ -31,7 +31,7 @@ def ebay_tings(product_name):
     i = 1
 
     while i < ebay_num_len:
-        new_ebay_links = 'https://www.ebay.com/sch/i.html?_from=R40&_nkw=calculator&_sacat=0&_pgn=' + str(i)
+        new_ebay_links = ebay_url + '&_pgn=' + str(i)
         
         ebay_new_link = requests.get(new_ebay_links, headers = HEADERS)
         new_ebay_soup = bs(ebay_new_link.content,features="html.parser")

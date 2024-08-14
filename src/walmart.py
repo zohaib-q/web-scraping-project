@@ -178,9 +178,9 @@ def walmart_tings(product_name):
     #         specific_item.append('None')
             
     #     walmart_item_desc.append(specific_item)
-    print(walmart_item_desc)
-    for i in range(len(walmart_items)):
-        print(walmart_items[i][1])
+    # print(walmart_item_desc)
+    # for i in range(len(walmart_items)):
+    #     print(walmart_items[i][1])
     return walmart_items
 
 #gets user input

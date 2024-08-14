@@ -47,7 +47,6 @@ def amazon_tings(product_name):
     expected_len = 0
     expected_len2 = 0
     ting = 0
-    ting2 = 0
 
     amazon_products = list()
     for nummms in range(a_num_pages):
@@ -102,19 +101,31 @@ def amazon_tings(product_name):
 
         try:
             detailed_amazon_products[i][1] = detailed_amazon_products[i][1].replace(',','')
-            detailed_amazon_products[i][3] = detailed_amazon_products[i][3].replace(',','')
-            detailed_amazon_products[i][1] = float(detailed_amazon_products[i][1])
-            detailed_amazon_products[i][2] = float(detailed_amazon_products[i][2])
-            detailed_amazon_products[i][3] = int(detailed_amazon_products[i][3])
-
-            if '$' in detailed_amazon_products[i][0]:
-                index = detailed_amazon_products[i][0].find('$')
-                detailed_amazon_products[i][0] = detailed_amazon_products[i][0][:index]
-
-            #validity score (multiplies number of reviews with average score)
-            detailed_amazon_products[i].append(detailed_amazon_products[i][2] * detailed_amazon_products[i][3])
         except:
-            detailed_amazon_products[i].append(0)
+            pass
+        try:
+            detailed_amazon_products[i][3] = detailed_amazon_products[i][3].replace(',','')
+        except:
+            pass
+        try:
+            detailed_amazon_products[i][1] = float(detailed_amazon_products[i][1])
+        except:
+            detailed_amazon_products[i][1] = 0
+        try:
+            detailed_amazon_products[i][2] = float(detailed_amazon_products[i][2])
+        except:
+            detailed_amazon_products[i][2] = 0
+        try:
+            detailed_amazon_products[i][3] = int(detailed_amazon_products[i][3])
+        except:
+            detailed_amazon_products[i][3] = 0
+
+        if '$' in detailed_amazon_products[i][0]:
+            index = detailed_amazon_products[i][0].find('$')
+            detailed_amazon_products[i][0] = detailed_amazon_products[i][0][:index]
+
+        #validity score (multiplies number of reviews with average score)
+        detailed_amazon_products[i].append(detailed_amazon_products[i][2] * detailed_amazon_products[i][3])
         
         if detailed_amazon_products[i][1] is str:
             detailed_amazon_products[i][1] = 0
@@ -125,11 +136,18 @@ def amazon_tings(product_name):
         if detailed_amazon_products[i][3] is str:
             detailed_amazon_products[i][3] = 0
 
-
-    
-
+    i = 0
+    while i < len(detailed_amazon_products):
+        if detailed_amazon_products[i][0] == 'None':
+            del detailed_amazon_products[i]
+        else:
+            i += 1
 
     return detailed_amazon_products
+
+
+
+
 
 # item = input("Enter the item you would like: ")
 # print(item)

@@ -66,6 +66,11 @@ def ebay_tings(product_name):
                 specific_item.append(new_ebay_soup_2.find('span', attrs = {'class' : 'ux-summary__count'}).text)
             except:
                 specific_item.append(0)
+            
+            try:
+                specific_item.append(ebay_further_links[ite])
+            except:
+                specific_item.append('no link available')
                 
             ebay_item_desc.append(specific_item)
         i += 1
@@ -76,32 +81,48 @@ def ebay_tings(product_name):
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('US $', '')
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('/ea', '')
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('None', '0')
-            ebay_item_desc[i][1] = float(ebay_item_desc[i][1])
-            #reviews
-            ebay_item_desc[i][2] = float(ebay_item_desc[i][2])
-            #number of reviews
-            ebay_item_desc[i][3] = ebay_item_desc[i][3].replace(' product ratings', '')
-            ebay_item_desc[i][3] = int(ebay_item_desc[i][3])
+        except:
+            pass
 
-            #product score
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('AU $', '')
+        except:
+            pass
+
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('GBP', '')
+        except:
+            pass
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace(',','')
+        except:
+            pass
+        
+        ebay_item_desc[i][1] = float(ebay_item_desc[i][1])
+
+        #reviews
+        ebay_item_desc[i][2] = float(ebay_item_desc[i][2])
+
+        #number of reviews
+        try:
+            ebay_item_desc[i][3] = ebay_item_desc[i][3].replace(' product ratings', '')
+        except:
+            pass
+
+        try:
+            ebay_item_desc[i][3] = int(ebay_item_desc[i][3])
+        except:
+            ebay_item_desc[i][3] = 0
+
+        #product score
+        try:
             ebay_item_desc[i].append(ebay_item_desc[i][2] * ebay_item_desc[i][3])
-            # print(ebay_item_desc[i][1])
         except:
             ebay_item_desc[i].append(0)
+        
+        if ebay_item_desc[i][0] == 'None':
+            del ebay_item_desc[i]
 
         
 
     return ebay_item_desc
-
-#gets user input
-# item = input("Enter the item you would like: ")
-# print(item)
-# print(ebay_tings(item))
-
-# ebay_item_desc.sort(key = lambda x:x[1])
-
-
-# print(len(ebay_item_desc))
-
-#US $9.99/ea
-#US $9.99

@@ -25,6 +25,15 @@ HEADERS = {
        
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
     'accept-language': 'en-GB,en;q=0.9',
+
+    #         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    # "Accept-Language": "en-US,en;q=0.9",
+    # "Accept-Encoding": "gzip, deflate, br",
+    # "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    # "Connection": "keep-alive",
+    # "Upgrade-Insecure-Requests": "1",
+    # "DNT": "1",  # Do Not Track Request Header
+    # "TE": "Trailers",
 }
 class Item:
     def __init__(self, amazon_list, walmart_list, ebay_list):
@@ -88,28 +97,39 @@ class Item:
         
         return self.num_items_shown(strr3)
     
-    def best_item_helper(self, i):
-        if self.amazon_list[0][i] > self.ebay_list[0][i]:
-            if self.amazon_list[0][i] > self.walmart_list[0][i]:
-                return self.amazon_list[0][i]
-        if self.ebay_list[0][i] > self.amazon_list[0][i]:
-            if self.ebay_list[0][i] > self.walmart_list[0][i]:
-                return self.ebay_list[0][i]
-        if self.walmart_list[0][i] > self.amazon_list[0][i]:
-            if self.walmart_list[0][i] > self.ebay_list[0][i]:
-                return self.walmart_list[0][i]
+    def best_item_helper(self, strr2, i):
+        if strr2 == 'h to l':
+            if self.amazon_list[0][i] > self.ebay_list[0][i]:
+                if self.amazon_list[0][i] > self.walmart_list[0][i]:
+                    return 'Name: ' + self.amazon_list[0][0] + '\nPrice: ' + self.amazon_list[0][1] + '\nReviews: ' + self.amazon_list[0][2] + '\nNumber of Reviews: ' + self.amazon_list[0][3] + '\nValidity Score: ' + self.amazon_list[0][5] + '\nLink: ' + self.amazon_list[0][4]
+            if self.ebay_list[0][i] > self.amazon_list[0][i]:
+                if self.ebay_list[0][i] > self.walmart_list[0][i]:
+                    return 'Name: ' + self.ebay_list[0][0] + '\nPrice: ' + self.ebay_list[0][1] + '\nReviews: ' + self.ebay_list[0][2] + '\nNumber of Reviews: ' + self.ebay_list[0][3] + '\nValidity Score: ' + self.ebay_list[0][5] + '\nLink: ' + self.ebay_list[0][4]
+            if self.walmart_list[0][i] > self.amazon_list[0][i]:
+                if self.walmart_list[0][i] > self.ebay_list[0][i]:
+                    return 'Name: ' + self.walmart_list[0][0] + '\nPrice: ' + self.walmart_list[0][1] + '\nReviews: ' + self.walmart_list[0][2] + '\nNumber of Reviews: ' + self.walmart_list[0][3] + '\nValidity Score: ' + self.walmart_list[0][5] + '\nLink: ' + self.walmart_list[0][4]
+        if strr2 == 'l to h':
+            if self.amazon_list[0][i] < self.ebay_list[0][i]:
+                if self.amazon_list[0][i] < self.walmart_list[0][i]:
+                    return 'Name: ' + self.amazon_list[0][0] + '\nPrice: ' + self.amazon_list[0][1] + '\nReviews: ' + self.amazon_list[0][2] + '\nNumber of Reviews: ' + self.amazon_list[0][3] + '\nValidity Score: ' + self.amazon_list[0][5] + '\nLink: ' + self.amazon_list[0][4]
+            if self.ebay_list[0][i] < self.amazon_list[0][i]:
+                if self.ebay_list[0][i] < self.walmart_list[0][i]:
+                    return 'Name: ' + self.ebay_list[0][0] + '\nPrice: ' + self.ebay_list[0][1] + '\nReviews: ' + self.ebay_list[0][2] + '\nNumber of Reviews: ' + self.ebay_list[0][3] + '\nValidity Score: ' + self.ebay_list[0][5] + '\nLink: ' + self.ebay_list[0][4]
+            if self.walmart_list[0][i] < self.amazon_list[0][i]:
+                if self.walmart_list[0][i] < self.ebay_list[0][i]:
+                    return 'Name: ' + self.walmart_list[0][0] + '\nPrice: ' + self.walmart_list[0][1] + '\nReviews: ' + self.walmart_list[0][2] + '\nNumber of Reviews: ' + self.walmart_list[0][3] + '\nValidity Score: ' + self.walmart_list[0][5] + '\nLink: ' + self.walmart_list[0][4]
 
-    def best_item(self, strr, strr3):
+    def best_item(self, strr, strr2, strr3):
         try:
             strr3 = int(strr3)
             if strr == 'price':
-                return self.best_item_helper(1)
+                return self.best_item_helper(strr2, 1)
             if strr == 'reviews':
-                return self.best_item_helper(2)
+                return self.best_item_helper(strr2, 2)
             if strr == 'num of reviews':
-                return self.best_item_helper(3)
+                return self.best_item_helper(strr2, 3)
             if strr == 'validity score':
-                return self.best_item_helper(4)
+                return self.best_item_helper(strr2, 4)
         except:
             return 'invalid string entered'
         
@@ -137,13 +157,17 @@ item_list = Item(amazon_list, walmart_list, ebay_list)
 
 amazon_list, walmart_list, ebay_list = item_list.sort_item_list(strr, strr2, strr3)
 
-best_item_list = item_list.best_item(strr, strr3)
+best_item_list = item_list.best_item(strr, strr2, strr3)
 
-print('Amazon List:\n' + amazon_list)
-print('Walmart List:\n' + walmart_list)
-print('Ebay List:\n' + ebay_list)
+print('Amazon List: ')
+print(amazon_list)
+print('Walmart List: ')
+print(walmart_list)
+print('Ebay List: ')
+print(ebay_list)
 
-print('The best item based on your filter preference is: \n' + best_item_list)
+print('The best item based on your filter preference is: ')
+print(best_item_list)
 
 
 

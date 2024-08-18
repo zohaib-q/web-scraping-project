@@ -75,7 +75,7 @@ def ebay_tings(product_name):
             ebay_item_desc.append(specific_item)
         i += 1
 
-    for i in range(len(ebay_item_desc)):
+    while i < len(ebay_item_desc):
         try:
             #price
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('US $', '')
@@ -97,7 +97,7 @@ def ebay_tings(product_name):
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace(',','')
         except:
             pass
-        
+
         ebay_item_desc[i][1] = float(ebay_item_desc[i][1])
 
         #reviews
@@ -122,6 +122,8 @@ def ebay_tings(product_name):
         
         if ebay_item_desc[i][0] == 'None':
             del ebay_item_desc[i]
+        else:
+            i += 1
 
         
 

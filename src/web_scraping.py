@@ -98,27 +98,32 @@ class Item:
         return self.num_items_shown(strr3)
     
     def best_item_helper(self, strr2, i):
+        return_str = ''
         if strr2 == 'h to l':
             if self.amazon_list[0][i] > self.ebay_list[0][i]:
                 if self.amazon_list[0][i] > self.walmart_list[0][i]:
-                    return 'Name: ' + self.amazon_list[0][0] + '\nPrice: ' + self.amazon_list[0][1] + '\nReviews: ' + self.amazon_list[0][2] + '\nNumber of Reviews: ' + self.amazon_list[0][3] + '\nValidity Score: ' + self.amazon_list[0][5] + '\nLink: ' + self.amazon_list[0][4]
+                    return_str = 'Name: ' + str(self.amazon_list[0][0]) + '\nPrice: ' + str(self.amazon_list[0][1]) + '\nReviews: ' + str(self.amazon_list[0][2]) + '\nNumber of Reviews: ' + str(self.amazon_list[0][3]) + '\nValidity Score: ' + str(self.amazon_list[0][5]) + '\nLink: ' + str(self.amazon_list[0][4])
+                    return return_str
             if self.ebay_list[0][i] > self.amazon_list[0][i]:
                 if self.ebay_list[0][i] > self.walmart_list[0][i]:
-                    return 'Name: ' + self.ebay_list[0][0] + '\nPrice: ' + self.ebay_list[0][1] + '\nReviews: ' + self.ebay_list[0][2] + '\nNumber of Reviews: ' + self.ebay_list[0][3] + '\nValidity Score: ' + self.ebay_list[0][5] + '\nLink: ' + self.ebay_list[0][4]
+                    return_str = 'Name: ' + str(self.ebay_list[0][0]) + '\nPrice: ' + str(self.ebay_list[0][1]) + '\nReviews: ' + str(self.ebay_list[0][2]) + '\nNumber of Reviews: ' + str(self.ebay_list[0][3]) + '\nValidity Score: ' + str(self.ebay_list[0][5]) + '\nLink: ' + str(self.ebay_list[0][4])
+                    return return_str
             if self.walmart_list[0][i] > self.amazon_list[0][i]:
                 if self.walmart_list[0][i] > self.ebay_list[0][i]:
-                    return 'Name: ' + self.walmart_list[0][0] + '\nPrice: ' + self.walmart_list[0][1] + '\nReviews: ' + self.walmart_list[0][2] + '\nNumber of Reviews: ' + self.walmart_list[0][3] + '\nValidity Score: ' + self.walmart_list[0][5] + '\nLink: ' + self.walmart_list[0][4]
+                    return_str = 'Name: ' + str(self.walmart_list[0][0]) + '\nPrice: ' + str(self.walmart_list[0][1]) + '\nReviews: ' + str(self.walmart_list[0][2]) + '\nNumber of Reviews: ' + str(self.walmart_list[0][3]) + '\nValidity Score: ' + str(self.walmart_list[0][5]) + '\nLink: ' + str(self.walmart_list[0][4])
+                    return return_str
         if strr2 == 'l to h':
             if self.amazon_list[0][i] < self.ebay_list[0][i]:
                 if self.amazon_list[0][i] < self.walmart_list[0][i]:
-                    return 'Name: ' + self.amazon_list[0][0] + '\nPrice: ' + self.amazon_list[0][1] + '\nReviews: ' + self.amazon_list[0][2] + '\nNumber of Reviews: ' + self.amazon_list[0][3] + '\nValidity Score: ' + self.amazon_list[0][5] + '\nLink: ' + self.amazon_list[0][4]
+                    return_str = 'Name: ' + str(self.amazon_list[0][0]) + '\nPrice: ' + str(self.amazon_list[0][1]) + '\nReviews: ' + str(self.amazon_list[0][2]) + '\nNumber of Reviews: ' + str(self.amazon_list[0][3]) + '\nValidity Score: ' + str(self.amazon_list[0][5]) + '\nLink: ' + str(self.amazon_list[0][4])
             if self.ebay_list[0][i] < self.amazon_list[0][i]:
                 if self.ebay_list[0][i] < self.walmart_list[0][i]:
-                    return 'Name: ' + self.ebay_list[0][0] + '\nPrice: ' + self.ebay_list[0][1] + '\nReviews: ' + self.ebay_list[0][2] + '\nNumber of Reviews: ' + self.ebay_list[0][3] + '\nValidity Score: ' + self.ebay_list[0][5] + '\nLink: ' + self.ebay_list[0][4]
+                    return_str = 'Name: ' + str(self.ebay_list[0][0]) + '\nPrice: ' + str(self.ebay_list[0][1]) + '\nReviews: ' + str(self.ebay_list[0][2]) + '\nNumber of Reviews: ' + str(self.ebay_list[0][3]) + '\nValidity Score: ' + str(self.ebay_list[0][5]) + '\nLink: ' + str(self.ebay_list[0][4])
+                    return return_str
             if self.walmart_list[0][i] < self.amazon_list[0][i]:
                 if self.walmart_list[0][i] < self.ebay_list[0][i]:
-                    return 'Name: ' + self.walmart_list[0][0] + '\nPrice: ' + self.walmart_list[0][1] + '\nReviews: ' + self.walmart_list[0][2] + '\nNumber of Reviews: ' + self.walmart_list[0][3] + '\nValidity Score: ' + self.walmart_list[0][5] + '\nLink: ' + self.walmart_list[0][4]
-
+                    return_str = 'Name: ' + str(self.walmart_list[0][0]) + '\nPrice: ' + str(self.walmart_list[0][1]) + '\nReviews: ' + str(self.walmart_list[0][2]) + '\nNumber of Reviews: ' + str(self.walmart_list[0][3]) + '\nValidity Score: ' + str(self.walmart_list[0][5]) + '\nLink: ' + str(self.walmart_list[0][4])
+                    return return_str
     def best_item(self, strr, strr2, strr3):
         try:
             strr3 = int(strr3)
@@ -129,7 +134,7 @@ class Item:
             if strr == 'num of reviews':
                 return self.best_item_helper(strr2, 3)
             if strr == 'validity score':
-                return self.best_item_helper(strr2, 4)
+                return self.best_item_helper(strr2, 5)
         except:
             return 'invalid string entered'
         

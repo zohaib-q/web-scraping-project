@@ -18,31 +18,31 @@ import amazon
 
 #user agent to be able to scape amazon
 HEADERS = {
-    # 'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
-    #                 'AppleWebKit/537.36 (KHTML, like Gecko)'
-    #                 'Chrome/44.0.2403.157 Safari/537.36'),
-    # 'Accept-Language': 'en-US, en;q=0.5'
-       
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
     'accept-language': 'en-GB,en;q=0.9',
-
-    #         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    # "Accept-Language": "en-US,en;q=0.9",
-    # "Accept-Encoding": "gzip, deflate, br",
-    # "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    # "Connection": "keep-alive",
-    # "Upgrade-Insecure-Requests": "1",
-    # "DNT": "1",  # Do Not Track Request Header
-    # "TE": "Trailers",
 }
 class Item:
     def __init__(self, amazon_list, walmart_list, ebay_list):
+        ''' 
+        Sets up the properties of the Item object
+        '''
         self.amazon_list =  amazon_list
         self.walmart_list = walmart_list
         self.ebay_list = ebay_list
 
 
     def sort_high_low(self, general_list, strr2, i):
+        '''
+        Sorts the lists based on if the user wants it sorted from low to high or high to low
+
+        Parameters:
+        general_list: The general list
+        strr2: The string on if the user wants the list sorted from high to low or low to high
+        i: The element of the list the user wants sorted
+
+        Returns:
+        The sorted list
+        '''
         if strr2 == 'l to h':
             general_list = sorted(general_list,key=lambda l:l[i])
             return general_list
@@ -53,6 +53,15 @@ class Item:
             return 'invalid option'
 
     def num_items_shown(self, strr3):
+        '''
+        Takes the sorted list and only displays the number of items the user wants to see
+
+        Parameters:
+        strr3: The number of items the user wants to see
+
+        Returns:
+        the 3 lists with the limited number of items
+        '''
         try:
             strr3 = int(strr3)
             i = 0
@@ -78,6 +87,17 @@ class Item:
             return 'invalid string entered'
 
     def sort_item_list(self, strr, strr2, strr3):
+        '''
+        Utilizes the previous two functions to sort the 3 lists and display the sorted lists with the number of items the user wants to be displayed
+
+        Parameters:
+        strr: the category the user wants sorted
+        strr2: Whether the user wants the list sorted from low to high or high to low
+        strr3: The number of items the user wants to see
+
+        Returns:
+        The three sorted lists
+        '''
         if strr == 'price':
             self.amazon_list = self.sort_high_low(self.amazon_list, strr2, 1)
             self.walmart_list = self.sort_high_low(self.walmart_list, strr2, 1)
@@ -98,6 +118,16 @@ class Item:
         return self.num_items_shown(strr3)
     
     def best_item_helper(self, strr2, i):
+        '''
+        Helper function to determine the 'best product' based on the users filter preferences
+
+        Parameters:
+        strr2: Whether the user wants the list sorted from low to high or high to low
+        i: the category the user wants sorted
+
+        Returns:
+        The information of the best product
+        '''
         return_str = ''
         if strr2 == 'h to l':
             if self.amazon_list[0][i] > self.ebay_list[0][i]:
@@ -125,6 +155,17 @@ class Item:
                     return_str = 'Name: ' + str(self.walmart_list[0][0]) + '\nPrice: ' + str(self.walmart_list[0][1]) + '\nReviews: ' + str(self.walmart_list[0][2]) + '\nNumber of Reviews: ' + str(self.walmart_list[0][3]) + '\nValidity Score: ' + str(self.walmart_list[0][5]) + '\nLink: ' + str(self.walmart_list[0][4])
                     return return_str
     def best_item(self, strr, strr2, strr3):
+        '''
+        Determines the 'best product' based on the users filter preferences
+
+        Parameters:
+        strr: the category the user wants sorted
+        strr2: Whether the user wants the list to be sorted from low to high or high to low
+        strr3: The number of items the user wants to see
+
+        Returns:
+        The best item if the user answered the questions correctly
+        '''
         try:
             strr3 = int(strr3)
             if strr == 'price':

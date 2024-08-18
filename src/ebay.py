@@ -105,6 +105,22 @@ def ebay_tings(product_name):
         except:
             pass
         try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('EUR ', '')
+        except:
+            pass
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('JPY ', '')
+        except:
+            pass
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('CAD ', '')
+        except:
+            pass
+        try:
+            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('EGP ', '')
+        except:
+            pass
+        try:
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace(',','')
         except:
             pass

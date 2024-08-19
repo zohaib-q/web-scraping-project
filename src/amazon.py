@@ -121,7 +121,7 @@ def amazon_tings(product_name):
     for i in range(len(detailed_amazon_products)):
         #gets rid of more unnecessary items from the list and converts price, reviews, num reviews to floats and ints
         if no_good_string in detailed_amazon_products[i][0]:
-            detailed_amazon_products[i] = ['None', '0', '0', '0']
+            detailed_amazon_products[i] = ['None', '0', '0', '0', 'no link available']
 
         try:
             detailed_amazon_products[i][1] = detailed_amazon_products[i][1].replace(',','')

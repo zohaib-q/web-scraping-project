@@ -22,6 +22,7 @@ def ebay_tings(product_name):
         Returns:
         a list of all the items containing [item name, price, average review, number of reviews, link, validity score]
     '''
+    bad_strings = ['US $', '/ea', 'AU $', 'GBP', 'EUR ', 'JPY ', 'CAD ', 'EGP ', ',']
 
     #adjusts the url
     ebay_url = 'https://www.ebay.com/sch/i.html?_from=R40&_trksid=p4432023.m570.l1313&_nkw=&_sacat=0'
@@ -46,38 +47,20 @@ def ebay_tings(product_name):
         new_ebay_soup = bs(ebay_new_link.content,features="html.parser")
 
         #accesses the individual item page
-        ebay_further_links = list()
-        ebay_search_links = new_ebay_soup.find_all('a', attrs={'class' : 's-item__link'})
-        for elements in ebay_search_links:
-            ebay_further_links.append(elements.get('href'))
+        ebay_further_links = [link.get('href') for link in new_ebay_soup.find_all('a', attrs={'class': 's-item__link'})]
         for ite in range(len(ebay_further_links)):
             detailed_e = requests.get(ebay_further_links[ite], headers=HEADERS)
             new_ebay_soup_2 = bs(detailed_e.content, "html.parser")
             specific_item = list()
 
-            #gets the item name
-            try:
-                specific_item.append(new_ebay_soup_2.find('h1', attrs= {'class' : 'x-item-title__mainTitle'}).text)
-            except:
-                specific_item.append('None')
-
-            #gets the item price
-            try:
-                specific_item.append(new_ebay_soup_2.find('div', attrs= {'class' : 'x-price-primary'}).text)
-            except:
-                specific_item.append(0.0)
-
-            #gets the item's average review
-            try:
-                specific_item.append(new_ebay_soup_2.find('span', attrs={'class' : 'ux-summary__start--rating'}).text)    
-            except:
-                specific_item.append(0.0)
-            
-            #gets the item's number of reviews
-            try:
-                specific_item.append(new_ebay_soup_2.find('span', attrs = {'class' : 'ux-summary__count'}).text)
-            except:
-                specific_item.append(0)
+            #name
+            specific_item.append(new_ebay_soup_2.find('h1', attrs={'class': 'x-item-title__mainTitle'}).text if new_ebay_soup_2.find('h1', attrs={'class': 'x-item-title__mainTitle'}) else 'None')
+            #price
+            specific_item.append(new_ebay_soup_2.find('div', attrs={'class': 'x-price-primary'}).text if new_ebay_soup_2.find('div', attrs={'class': 'x-price-primary'}) else '0.0')
+            #average review
+            specific_item.append(new_ebay_soup_2.find('span', attrs={'class': 'ux-summary__start--rating'}).text if new_ebay_soup_2.find('span', attrs={'class': 'ux-summary__start--rating'}) else '0.0')
+            #number of reviews
+            specific_item.append( new_ebay_soup_2.find('span', attrs={'class': 'ux-summary__count'}).text if new_ebay_soup_2.find('span', attrs={'class': 'ux-summary__count'}) else '0')
             
             #gets the item link
             try:
@@ -91,39 +74,12 @@ def ebay_tings(product_name):
     while i < len(ebay_item_desc):
         #isolates the price to convert it to a float
         try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('US $', '')
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('/ea', '')
             ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('None', '0')
         except:
             pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('AU $', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('GBP', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('EUR ', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('JPY ', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('CAD ', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace('EGP ', '')
-        except:
-            pass
-        try:
-            ebay_item_desc[i][1] = ebay_item_desc[i][1].replace(',','')
-        except:
-            pass
+        for j in range(len(bad_strings)):
+            if bad_strings[j] in ebay_item_desc[i][1]:
+                ebay_item_desc[i][1] = ebay_item_desc[i][1].replace(bad_strings[j], '')
         ebay_item_desc[i][1] = float(ebay_item_desc[i][1])
 
         #converts average review to float
@@ -144,7 +100,6 @@ def ebay_tings(product_name):
             ebay_item_desc[i].append(ebay_item_desc[i][2] * ebay_item_desc[i][3])
         except:
             ebay_item_desc[i].append(0)
-        
         if ebay_item_desc[i][0] == 'None':
             del ebay_item_desc[i]
         else:

@@ -22,7 +22,7 @@ def ebay_tings(product_name):
         Returns:
         a list of all the items containing [item name, price, average review, number of reviews, link, validity score]
     '''
-    bad_strings = ['US $', '/ea', 'AU $', 'GBP', 'EUR ', 'JPY ', 'CAD ', 'EGP ', ',']
+    bad_strings = ['US $', '/ea', 'AU $', 'GBP', 'EUR ', 'JPY ', 'CAD ', 'EGP ', ',', 'C $']
 
     #adjusts the url
     ebay_url = 'https://www.ebay.com/sch/i.html?_from=R40&_trksid=p4432023.m570.l1313&_nkw=&_sacat=0'
